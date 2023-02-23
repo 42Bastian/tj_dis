@@ -173,9 +173,8 @@ const char *condTxt(int condCode)
     return "mi_nz,";
   case 0x1a:
     return "mi_z,";
-  default:
-    "XX,";
   }
+  return "XX,";
 }
 
 int decode(const uint8_t *addr, uint32_t address, char *decoded)
@@ -292,8 +291,14 @@ int decode(const uint8_t *addr, uint32_t address, char *decoded)
     offset = 6;
     break;
   case opcode_JUMP:
-  case opcode_JR:
     sprintf(help,"%s(r%d)",condTxt(reg2),reg1);
+    break;
+  case opcode_JR:
+      {
+        reg1 = (reg1 > 15) ? -31+reg1 : reg1;
+        int addr = address + reg1*2;
+        sprintf(help,"%s$%06x",condTxt(reg2),addr);
+      }
     break;
   }
 
