@@ -295,8 +295,8 @@ int decode(const uint8_t *addr, uint32_t address, char *decoded)
     break;
   case opcode_JR:
       {
-        reg1 = (reg1 > 15) ? -31+reg1 : reg1;
-        int addr = address + reg1*2;
+        reg1 = (reg1 > 15) ? -32+reg1 : reg1;
+        int addr = address + 2 +reg1*2;
         sprintf(help,"%s$%06x",condTxt(reg2),addr);
       }
     break;
