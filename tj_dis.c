@@ -323,10 +323,18 @@ main (int argc, char *argv[])
   size_t fileSize;
   char *fileBuffer;
   int error;
+  uint32_t addr = 0xf03000;
 
-  fileHandle = fopen(argv[1],"rb");
+  if ( argc == 3 ){
+    error = sscanf(argv[1],"%x",&addr);
+    if ( error == 0 ){
+      fprintf(stderr,"Cannot understand %s\n",argv[1]);
+      exit(-1);
+    }
+  }
+  fileHandle = fopen(argv[argc-1],"rb");
   if ( !fileHandle ){
-    fprintf(stderr, "Cannot open %s\n", argv[1]);
+    fprintf(stderr, "Cannot open %s\n", argv[argc-1]);
     exit(-1);
   }
   fseek(fileHandle, 0, SEEK_END);
@@ -344,7 +352,6 @@ main (int argc, char *argv[])
     exit(-1);
   }
 
-  uint32_t addr = 0xf03000;
   char help[64];
   int offset;
   const uint8_t *p = (uint8_t *)fileBuffer;
