@@ -192,6 +192,7 @@ int decode(const uint8_t *addr, uint32_t address, char *decoded)
   insn = (opcode >> 10);
   reg1 = (opcode >> 5) & 31;
   reg2 = opcode & 31;
+
   switch( insn ){
   case opcode_ADD:
   case opcode_ADDC:
@@ -279,9 +280,11 @@ int decode(const uint8_t *addr, uint32_t address, char *decoded)
   case opcode_MOVEQ:
   case opcode_RORQ:
   case opcode_SHARQ:
-  case opcode_SHLQ:
   case opcode_SHRQ:
     sprintf(help,"#%d,r%d",reg1,reg2);
+    break;
+  case opcode_SHLQ:
+    sprintf(help,"#%d,r%d",32-reg1,reg2);
     break;
   case opcode_NOP:
     *help = 0;
