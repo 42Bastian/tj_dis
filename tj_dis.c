@@ -328,6 +328,16 @@ main (int argc, char *argv[])
   int error;
   uint32_t addr = 0xf03000;
 
+	if ((argc > 1) && (!strcmp(argv[1], "-?") || !strcmp(argv[1], "-h")))
+	{ 
+	printf("Small Jaguar disassembler with lyxass-header detection\n");
+	printf("Usage:\n");
+	printf("tj_dis <address in hexadecimal> <file>\n");
+	printf("tj_dis <file>\n");
+	}
+	else
+	{
+
   if ( argc == 3 ){
     error = sscanf(argv[1],"%x",&addr);
     if ( error == 0 ){
@@ -375,6 +385,6 @@ main (int argc, char *argv[])
   }
 
   free(fileBuffer);
-
+}
   return 0;
 }
