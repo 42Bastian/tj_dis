@@ -297,11 +297,11 @@ int decode(const uint8_t *addr, uint32_t address, char *decoded)
     sprintf(help,"%s(r%d)",condTxt(reg2),reg1);
     break;
   case opcode_JR:
-      {
-        reg1 = (reg1 > 15) ? -32+reg1 : reg1;
-        int addr = address + 2 +reg1*2;
-        sprintf(help,"%s$%06x",condTxt(reg2),addr);
-      }
+    {
+      reg1 = (reg1 > 15) ? -32+reg1 : reg1;
+      int addr = address + 2 +reg1*2;
+      sprintf(help,"%s$%06x",condTxt(reg2),addr);
+    }
     break;
   }
 
@@ -319,8 +319,7 @@ int decode(const uint8_t *addr, uint32_t address, char *decoded)
   return offset;
 }
 
-int
-main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
   FILE *fileHandle;
   size_t fileSize;
@@ -328,15 +327,15 @@ main (int argc, char *argv[])
   int error;
   uint32_t addr = 0xf03000;
 
-	if ((argc > 1) && (!strcmp(argv[1], "-?") || !strcmp(argv[1], "-h")))
-	{ 
-	printf("Small Jaguar disassembler with lyxass-header detection\n");
-	printf("Usage:\n");
-	printf("tj_dis <address in hexadecimal> <file>\n");
-	printf("tj_dis <file>\n");
-	}
-	else
-	{
+  if (argc == 1 ||
+      (argc > 1) && (!strcmp(argv[1], "-?") || !strcmp(argv[1], "-h")))
+    {
+    printf("Small Jaguar disassembler with lyxass-header detection\n");
+    printf("Usage:\n");
+    printf("tj_dis <address in hexadecimal> <file>\n");
+    printf("tj_dis <file>\n");
+    return 0;
+  }
 
   if ( argc == 3 ){
     error = sscanf(argv[1],"%x",&addr);
@@ -370,7 +369,7 @@ main (int argc, char *argv[])
   const uint8_t *p = (uint8_t *)fileBuffer;
   if ( fileBuffer[0] == 'B' && fileBuffer[1] == 'S' ) {
     addr = (p[4]<<24)|(p[5]<<16)|(p[6]<<8)|p[7];
-     p = (uint8_t *)(fileBuffer+12);
+    p = (uint8_t *)(fileBuffer+12);
   }
   while( (char *)p < fileBuffer+fileSize ){
     offset = decode(p, addr, help);
@@ -385,6 +384,6 @@ main (int argc, char *argv[])
   }
 
   free(fileBuffer);
-}
-  return 0;
+
+  return 1;
 }
